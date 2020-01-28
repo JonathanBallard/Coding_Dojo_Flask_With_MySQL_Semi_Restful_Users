@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,
+    initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <script defer type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <title>Create and Read Pets</title>
+</head>
+<body>
+<h1>Create and Read Pets</h1>
+
+<h1>All Pets</h1>
+{% for pet in all_pets %}
+    <p>ID: {{pet["id"]}}</p>
+    <p>Name: {{pet["name"]}}</p>
+    <p>Type: {{pet["type"]}}</p>
+    <hr>
+{% endfor %}
+<hr>
+<hr>
+<h1>Add a Pet!</h1>
+<form action="/create_pet" method="POST">
+    <p>Name: <input type="text" name="name"></p>
+    <p>Type: <input type="text" name="type"></p>
+    <input type="submit" value="Add Pet">
+</form>
+
+
+
+</body>
+</html>
