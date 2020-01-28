@@ -5,43 +5,39 @@ app = Flask(__name__)
 
 
 
-@app.route('/')
+@app.route('/users')
 def index():
-    mysql = connectToMySQL("create_and_read_pets")
-    pets = mysql.query_db("SELECT * FROM pets;")
-    print(pets)
-    return render_template("index.html", all_pets = pets)
-            
-@app.route("/create_pet", methods=["POST"])
-def add_friend_to_db():
-    print(request.form)
-    mysql = connectToMySQL("create_and_read_pets")
-    query = "INSERT INTO pets (name, type, created_at, updated_at) VALUES (%(name)s, %(type)s, NOW(), NOW());"
-    data = {
-        "name": request.form['name'],
-        "type": request.form['type']
-    }
-    new_pet_id = mysql.query_db(query, data)
-
-
-
-    # SQL INJECTION
-
-    # mysql = connectToMySQL("create_and_read_pets")
-    # name = request.form['name']
-    # typeA = request.form['type']
-    # query = f"INSERT INTO pets (name, type, created_at, updated_at) VALUES ({name}, {typeA}, NOW(), NOW());"
-    # new_pet_id = mysql.query_db(query)
-
-
-
-
-
-
+    mysql = connectToMySQL("semi_restful_users")
+    users = mysql.query_db("SELECT * FROM users;")
+    print(users)
+    return render_template("index.html", all_users = users)
     
-    return redirect("/")
-    # QUERY: INSERT INTO first_flask (first_name, last_name, occupation, created_at, updated_at) 
-    #                         VALUES (fname from form, lname from form, occupation from form, NOW(), NOW());
+    
+@app.route('/users/new')
+def new_user():
+    return render_template("new_user.html")
+
+@app.route('/users/<id>')
+def user_id(id):
+    return render_template("user.html", user_id = id)
+
+
+
+
+
+@app.route("/users/create", methods=["POST"])
+def add_user_to_db():
+    print(request.form)
+    mysql = connectToMySQL("semi_restful_users")
+    query = "INSERT INTO users (first_name, last_name, email, created_at, updated_at) VALUES (%(fname)s, %(lname)s, %(email)s);"
+    data = {
+        "fname": request.form['fname'],
+        "lname": request.form['lname'],
+        "email": request.form['email']
+    }
+    new_user_id = mysql.query_db(query, data)
+    return redirect("/users")
+
 
 if __name__ == "__main__":
     app.run(debug=True)
