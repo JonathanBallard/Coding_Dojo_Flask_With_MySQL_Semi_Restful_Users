@@ -28,9 +28,6 @@ def user_id(id):
 def edit_user_id(id):
     mysql = connectToMySQL("semi_restful_users")
     userSearched = mysql.query_db(f"SELECT * FROM users WHERE id = {id};")
-
-    
-
     return render_template("edit_user.html", user = userSearched)
 
 
@@ -52,6 +49,18 @@ def edit_user(id):
 
     return redirect(f'/users/{id}')
 
+
+@app.route('/users/<id>/destroy')
+def destroy_user_id(id):
+    
+    mysql = connectToMySQL("semi_restful_users")
+    query = "DELETE FROM users WHERE id = " + id + ";"
+    
+       
+    edit_user_id = mysql.query_db(query)
+
+
+    return redirect('/users')
 
 
 
